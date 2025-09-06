@@ -3,3 +3,9 @@
   max-width: 1270px !important;
   margin: 0 auto !important;
 }
+
+@media screen and (max-width: 640px) {
+  .container {
+    padding-inline: 0.5rem !important;
+  }
+}
