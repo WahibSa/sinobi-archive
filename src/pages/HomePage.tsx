@@ -73,8 +73,8 @@ const HomePage = () => {
         <div className="flex justify-center">
           <button
             onClick={() => {
-              handleSearch({ type: searchType });
               setLimit((prev) => prev + 10);
+              handleSearch({ type: searchType });
             }}
             className="bg-blue-500 text-white px-4 py-2 rounded mb-8"
             disabled={isLoading}
