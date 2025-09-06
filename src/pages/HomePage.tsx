@@ -4,17 +4,23 @@ import LatestBlog from "../components/LatestBlog";
 const HomePage = () => {
   const [searchType, setSearchType] = React.useState("characters");
   const [latestBlogData, setLatestBlogData] = React.useState<any>({});
+  const [limit, setLimit] = React.useState(10);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     handleSearch({ type: searchType });
   }, [searchType]);
 
-  const handleSearch = ({ type }: { type: string }) => {
-    fetch(`${import.meta.env.VITE_API_BASE_URL}/${type}`)
+  const handleSearch = async ({ type }: { type: string }) => {
+    setIsLoading(true);
+    await fetch(`${import.meta.env.VITE_API_BASE_URL}/${type}?limit=${limit}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
         setLatestBlogData(() => data);
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -64,6 +70,18 @@ const HomePage = () => {
       </div>
       <div className="bg-white p-4 rounded-t-lg mx-20">
         <LatestBlog type={searchType} data={latestBlogData} />
+        <div className="flex justify-center">
+          <button
+            onClick={() => {
+              handleSearch({ type: searchType });
+              setLimit((prev) => prev + 10);
+            }}
+            className="bg-blue-500 text-white px-4 py-2 rounded mb-8"
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Load More"}
+          </button>
+        </div>
       </div>
     </>
   );
